@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -47,4 +48,8 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private Collection<Game> games;
+
+    public String getJavaDate(){
+        return creationDate.toString();
+    }
 }

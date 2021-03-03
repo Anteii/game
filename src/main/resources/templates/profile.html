@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getUsername()}"></title>
+</head>
+<body>
+    <div>
+        <img th:src="@{/images/profiles_pictures/{name}.jpg(name=${user.getUserId()})}" alt="Пикча не найдена">
+
+    </div>
+    <a th:href="@{{uname}/settings(uname=${user.getUsername()})}">настройки</a>
+    <div>
+        <p>[[${user.getNickname()}]] с нами с [[${#dates.format(user.getCreationDate(), "dd-MM-yyyy")}]]</p>
+    </div>
+    <div>
+        <p>Всего матчей [[${user.getTotalGames()}]]</p>
+        <p>Выиграно матчей[[${user.getWinedGames()}]]</p>
+        <p>Текущая позиция[[${user.getPosition()}]]</p>
+    </div>
+</body>
+</html>

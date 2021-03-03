@@ -32,7 +32,7 @@ public class AuthController {
         return "redirect:/games";
     }
 
-    @GetMapping("/login-error")
+    @RequestMapping("/login-error")
     public String loginError(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
@@ -55,7 +55,6 @@ public class AuthController {
         }
         sessionService.expireUserSessions(request.getParameterValues("username")[0]);
         model.addAttribute("sessionError", true);
-        //request.getRequestDispatcher("/auth/login").forward(request, response);
         return "login";
     }
 }

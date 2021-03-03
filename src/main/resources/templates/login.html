@@ -1,22 +1,19 @@
-<html lang="en">
+<!DOCTYPE html>
+<html  lang=en xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Login Customer</title>
 </head>
 <body>
-<div class="container">
-    <form class="form-signin" method="post" action="/auth/login">
-        <h2 class="form-signin-heading">Login</h2>
-        <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
-        </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
-</div>
+
+<p th:if="${loginError}" class="error">Wrong user or password</p>
+<p th:if="${sessionError}" class="error">Ваша прошлая сессия была вынуждено закрыта. Повторите ещё раз</p>
+<form th:method="POST" th:action="@{/auth/login}">
+    <label for="username">Username</label><input type="text" id="username" name="username"/>
+    <label for="password">Password</label><input type="text" id="password" name="password"/>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" />
+</form>
+<a href="/auth/signup">Зарегистрироваться</a>
 </body>
 </html>

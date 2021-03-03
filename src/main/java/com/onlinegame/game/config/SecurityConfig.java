@@ -11,11 +11,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -45,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/auth/login")
                 .defaultSuccessUrl("/games")
+                .failureHandler(sessionSecurityErrorHandlerBean())
+                //.failureUrl("/auth/login-error")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
@@ -54,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/auth/login")
                 .and()
                 .sessionManagement().maximumSessions(1).maxSessionsPreventsLogin(true)
+                .expiredUrl("/auth/login")
                 .sessionRegistry(sessionRegistry());
     }
 
@@ -61,7 +68,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new SessionEventListener(sessionRegistry());
+    }
 
+    @Bean
+    public SimpleUrlAuthenticationFailureHandler sessionSecurityErrorHandlerBean(){
+        return new SessionSecurityErrorHandler(sessionRegistry());
+    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());

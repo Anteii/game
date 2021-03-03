@@ -1,8 +1,8 @@
 package com.onlinegame.game.model;
 
 public enum Permission {
-    DEVELOPERS_READ("developers:read"),
-    DEVELOPERS_WRITE("developers:write");
+    BASIC_PERMISSION("basic"),
+    MODERATION("moderation");
 
     private String permission;
 

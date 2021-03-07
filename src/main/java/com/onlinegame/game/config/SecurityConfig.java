@@ -16,7 +16,6 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -42,12 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/styles/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/auth/login")
-                .defaultSuccessUrl("/games")
-                .failureHandler(sessionSecurityErrorHandlerBean())
+                .successHandler(new CustomAuthenticationSuccessHandler())
+                .failureHandler(new AuthenticationErrorHandler())
                 //.failureUrl("/auth/login-error")
                 .and()
                 .logout()
@@ -71,12 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SessionEventListener(sessionRegistry());
     }
 
-    @Bean
-    public SimpleUrlAuthenticationFailureHandler sessionSecurityErrorHandlerBean(){
-        return new SessionSecurityErrorHandler(sessionRegistry());
-    }
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

@@ -21,6 +21,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
                     return "error-500";
                 case 403:
                     return "error-403";
+                case 400:
+                    return "error-400";
             }
         }
         return "error";

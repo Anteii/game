@@ -1,19 +1,36 @@
 <!DOCTYPE html>
-<html  lang=en xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html  lang="en" xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <title>Login Customer</title>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" th:href="@{/styles/test.css}">
 </head>
 <body>
 
-<p th:if="${loginError}" class="error">Wrong user or password</p>
-<p th:if="${sessionError}" class="error">Ваша прошлая сессия была вынуждено закрыта. Повторите ещё раз</p>
-<form th:method="POST" th:action="@{/auth/login}">
-    <label for="username">Username</label><input type="text" id="username" name="username"/>
-    <label for="password">Password</label><input type="text" id="password" name="password"/>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" />
-</form>
-<a href="/auth/signup">Зарегистрироваться</a>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <h2 class="active">Войти</h2>
+        <!-- Login Form -->
+        <p th:if="${loginError}" class="error">Не верный логин или пароль</p>
+        <p th:if="${doubleSessionError}" class="error">Ваша прошлая сессия была вынуждено закрыта. Повторите ещё раз</p>
+        <form th:method="POST" th:action="@{/auth/login}">
+            <label for="username">Логин</label><br><input type="text" id="username" name="username"/><br>
+            <label for="password">Пароль</label><br><input type="text" id="password" name="password"/><br>
+            <p><input type="submit" value="Войти" />
+        </form>
+
+
+        <div id="formFooter">
+            <!-- Remind Passowrd -->
+            <a class="underlineHover" th:href="@{/auth/forget}">Забыли пароль?</a><br>
+            <!-- SignUp -->
+            <a class="underlineHover" th:href="@{/auth/signup}">Нет аккаунта?</a>
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>

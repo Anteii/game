@@ -6,11 +6,9 @@
     <title>Games</title>
 </head>
 <body>
-<form th:action="@{/auth/logout}" method="POST">
-<input type="submit" value="Logout">
-    <a th:href="@{/profile/{uname}(uname=${user.getUsername()})}">Профиль</a>
-        <img src="https://thumbs.gfycat.com/TediousEnchantedCaecilian-max-1mb.gif" alt="this slowpoke moves"  width=600 height=600/>
-        <img src="https://thumbs.gfycat.com/BrightJoyousIndri-small.gif" alt="this slowpoke moves"  width=250/>
-</form>
+<form th:action="@{/auth/logout}" method="POST"><input type="submit" value="Logout"></form>
+<a th:href="@{/profile/{uname}(uname=${user.getUsername()})}">Профиль</a>
+<img src="https://thumbs.gfycat.com/TediousEnchantedCaecilian-max-1mb.gif" alt="this slowpoke moves"  width=600 height=600/>
+<img src="https://thumbs.gfycat.com/BrightJoyousIndri-small.gif" alt="this slowpoke moves"  width=250/>
 </body>
 </html>

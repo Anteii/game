@@ -1,12 +1,13 @@
 package com.onlinegame.game.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -18,15 +19,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;
     @NotBlank(message = "username is required")
+    @Column(unique = true)
     private String username;
     @NotBlank(message = "password is required")
     private String password;
     @NotBlank(message = "full name is required")
     private String name;
-    @NotBlank(message = "nick")
+    @NotBlank(message = "Ingame name is required")
     private String nickname;
     @NotBlank(message = "email is required")
-    @Email
+    @Email(message = "Email should be valid")
+    @Column(unique = true)
     private String email;
     @Column
     private String avatarPic;
@@ -44,7 +47,7 @@ public class User {
     @Column
     private Boolean isEnabled;
     @Column
-    private java.sql.Timestamp creationDate;
+    private java.time.Instant creationDate;
 
     @ManyToMany(mappedBy = "users")
     private Collection<Game> games;

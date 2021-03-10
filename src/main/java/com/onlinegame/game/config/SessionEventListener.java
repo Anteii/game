@@ -22,6 +22,9 @@ public class SessionEventListener extends HttpSessionEventPublisher {
     @Override
     public void sessionCreated(HttpSessionEvent event) {
         super.sessionCreated(event);
+        event.getSession().setMaxInactiveInterval(60*10);
+
+        System.out.println("session created");
     }
 
     @Override

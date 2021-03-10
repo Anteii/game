@@ -2,13 +2,48 @@
 <html  lang=en xmlns="http://www.w3.org/1999/xhtml"
        xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" type="text/css" href="../static/styles/test.css"/>
     <meta charset="UTF-8">
     <title>Games</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/styles/test.css}">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 </head>
 <body>
-<form th:action="@{/auth/logout}" method="POST"><input type="submit" value="Logout"></form>
-<a th:href="@{/profile/{uname}(uname=${user.getUsername()})}">Профиль</a>
-<img src="https://thumbs.gfycat.com/TediousEnchantedCaecilian-max-1mb.gif" alt="this slowpoke moves"  width=600 height=600/>
-<img src="https://thumbs.gfycat.com/BrightJoyousIndri-small.gif" alt="this slowpoke moves"  width=250/>
+<div class="page">
+    <div class="header">
+        <form class="logout-btn" th:action="@{/auth/logout}" method="POST"><input type="submit" value="Logout"></form>
+        <form class="profile-btn" th:action="@{/profile/{name}(name=${user.getUsername()})}" method="GET"><input type="submit" value="Profile"></form>
+    </div>
+    <div class="main-container">
+        <div class="left-container">
+            <div class="game-finder">
+                <input type="text" name="game-name" id="game-name" placeholder="Название комнаты"/>
+                <input type="button" name="find-game" id="find-game" value="найти"/>
+            </div>
+            <div class="games-list"></div>
+        </div>
+        <div class="right-container">
+            <p>Chat</p>
+            <div class="chat scrollable" id="chat" name="chat">
+            </div>
+            <div class="chat-controls">
+                <input class="chat-input" type="text" name="chat-input" id="chat-input" />
+                <input class="chat-btn" type="button" name="chat-btn" id="chat-btn" value="Отправить"/>
+            </div>
+            <p>Friends</p>
+            <div class="friends-list scrollable">
+                <div class="friend" th:each="friend : ${friendsList}" th:attr="username=${friend.getUsername()}">
+                    <img class="mini-avatar" th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />[[${friend.getNickname()}]]
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer"></div>
+    <ul class='custom-menu'></ul>
+</div>
 </body>
+<script src="../static/js/games.js" th:src="@{/js/games.js}"></script>
 </html>

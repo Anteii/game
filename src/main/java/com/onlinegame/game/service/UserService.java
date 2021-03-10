@@ -1,8 +1,10 @@
 package com.onlinegame.game.service;
 
 import com.onlinegame.game.dto.UserForm;
+import com.onlinegame.game.model.Friendship;
 import com.onlinegame.game.model.Role;
 import com.onlinegame.game.model.User;
+import com.onlinegame.game.repository.FriendshipRepository;
 import com.onlinegame.game.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -18,10 +21,12 @@ public class UserService {
     private static final String DEFAULT_USER_PROFILE_PICTURE_NAME = "default.jpg";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FriendshipRepository friendshipRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService, FriendshipRepository friendshipRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.friendshipRepository = friendshipRepository;
     }
 
     @Transactional
@@ -68,6 +73,22 @@ public class UserService {
         return user;
     }
 
+    public List<User> getUserFriends(String username){
+        User user = userRepository.findByUsername(username).orElseThrow();
+        return getUserFriends(user);
+    }
+    @Transactional
+    public List<User> getUserFriends(User user){
+        return userRepository.getFriendsListById(user.getUserId());
+    }
+    public void deleteFriend(User user, String friendUsername){
+        User friendToDelete = userRepository.findByUsername(friendUsername).orElseThrow();
+        Friendship f1 = friendshipRepository.findByUserOneAndUserTwo(user, friendToDelete).orElseThrow();
+        Friendship f2 = friendshipRepository.findByUserOneAndUserTwo(friendToDelete, user).orElseThrow();
+        //friendshipRepository.delete(f1);
+        friendshipRepository.deleteInBatch(List.of(f1, f2));
+        //friendshipRepository.delete(f2);
+    }
     public boolean isFileSuitable(MultipartFile file){
         return file.getSize() < USER_PROFILE_PICTURE_MAX_SIZE;
     }
@@ -76,5 +97,13 @@ public class UserService {
     }
     public boolean isEmailFree(String email) {
         return userRepository.findByEmail(email).isEmpty();
+    }
+    public boolean isCredentialsRight(String username, String password){
+        try{
+            User user = userRepository.findByUsername(username).orElseThrow();
+            return user.getPassword().equals(password);
+        } catch (Exception e){
+            return false;
+        }
     }
 }

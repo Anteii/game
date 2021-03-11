@@ -13,9 +13,9 @@
 .chat{
     background-color: #4f78c5;
     border: 2px solid cadetblue;
-    min-height: 59%;
+    height: 300px;
+    /*max-height: 300px;*/
     box-sizing: border-box;
-    min-height: 300px;
 }
 .chat-controls{
     width: 100%;
@@ -103,7 +103,9 @@
     box-sizing: border-box;
 }
 html {
-    background-color: #11258a;
+    background-color: #4f78c5
+    /*background-image: url("https://hdblackwallpaper.com/wallpaper/2015/07/plain-black-background-wallpaper-11-widescreen-wallpaper.jpg");
+    background-size: contain;*/
 }
 
 body {

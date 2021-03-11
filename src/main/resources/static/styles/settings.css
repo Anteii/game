@@ -1,0 +1,12 @@
+html{
+    background: #4f78c5;
+}
+
+
+.parameters{
+    position: fixed; top: 44%; left: 40%;
+}
+
+.apply-button{
+    position: fixed; top: 620px; left: 47%;
+}

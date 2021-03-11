@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" type="text/css" href="../static/styles/settings.css"/>
     <meta charset="UTF-8">
     <title>Settings</title>
+    <link rel="stylesheet" th:href = "@{/styles/settings.css}">
+    <link rel="icon" th:href="@{/icons/owl.png}">
 </head>
 <body>
-Настройки
+<a th:href="@{/profile/{name}(name=${user.getUsername()})}">назад</a>
+    <div class="parameters">
+        <form th:object="${user}" th:method="POST" th:action="@{settings}">
+            <label for="nickname">Имя в игре</label><input th:field="*{nickname}" type="text" id="nickname" name="nickname"/>
+            <p th:each="error : ${#fields.errors('nickname')}"
+               th:text="${error}">Validation error</p><br>
+            <label for="name">Имя</label><input th:field="*{name}" type="text" id="name" name="name"/>
+            <p th:each="error : ${#fields.errors('name')}"
+               th:text="${error}">Validation error</p><br>
+            <label for="password">Новый пароль</label><input type="text" id="password" name="password"/>
+            <p th:each="error : ${#fields.errors('password')}"
+               th:text="${error}">Validation error</p><br>
+            <p><input class="apply-button" type="submit" value="Применить" />
+         </form>
+    </div>
+
+
+
 </body>
 </html>

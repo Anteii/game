@@ -1,5 +1,6 @@
 package com.onlinegame.game.controller;
 
+import com.onlinegame.game.dto.UserForm;
 import com.onlinegame.game.model.User;
 import com.onlinegame.game.repository.UserRepository;
 import com.onlinegame.game.service.UserService;
@@ -7,10 +8,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -19,10 +24,12 @@ public class MainController {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public MainController(UserRepository userRepository, UserService userService) {
+    public MainController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/games")
@@ -60,10 +67,20 @@ public class MainController {
         return "settings";
     }
 
-    @GetMapping("/websock")
-    public String webSock(){
-        return "../static/websock-test.html";
+    @PostMapping("/profile/{username}/settings")
+    public String applySettings(Model model, @PathVariable String username,
+                                @ModelAttribute("user") UserForm userForm, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "settings";
+        }
+        User user = userRepository.findByUsername(username).orElseThrow();
+        user.setNickname(userForm.getNickname());
+        user.setName(userForm.getName());
+        user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        userRepository.save(user);
+        return "redirect:settings";
     }
+
     private User getCurrentUser(){
         UserDetails principle = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findByUsername(principle.getUsername()).orElseThrow();

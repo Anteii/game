@@ -2,22 +2,26 @@
 <html  lang="en" xmlns="http://www.w3.org/1999/xhtml"
        xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <meta charset="UTF-8">
-    <title th:text="${user.getUsername()}"></title>
+    <title th:text="${user.getUsername()}">
+    </title>
+    <link rel="stylesheet" th:href = "@{/styles/profile.css}">
+    <link rel="icon" th:href="@{/icons/owl.png}">
 </head>
 <body>
 <a th:href="@{/games}">Игры</a>
     <div>
-        <img th:src="@{/images/profiles_pictures/{name}(name=${user.getAvatarPic()})}" alt="Пикча не найдена">
+        <img class="user-image" th:src="@{/images/profiles_pictures/{name}(name=${user.getAvatarPic()})}" alt="Пикча не найдена">
     </div>
-    <a th:if="${isMe}" th:href="@{{uname}/settings(uname=${user.getUsername()})}">Настройки</a>
-    <div>
+    <a class="user-settings" th:if="${isMe}" th:href="@{{uname}/settings(uname=${user.getUsername()})}">Настройки</a>
+    <div class="user-name">
         <p>[[${user.getNickname()}]] с нами с [[${#dates.format(user.getCreationDate(), "dd-MM-yyyy")}]]</p>
     </div>
-    <div>
+    <div class="user-info">
         <p>Всего матчей [[${user.getTotalGames()}]]</p>
-        <p>Выиграно матчей[[${user.getWinedGames()}]]</p>
-        <p>Текущая позиция[[${user.getPosition()}]]</p>
+        <p>Выиграно матчей [[${user.getWinedGames()}]]</p>
+        <p>Текущая позиция [[${user.getPosition()}]]</p>
     </div>
 </body>
 </html>

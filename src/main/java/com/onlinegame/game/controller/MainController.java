@@ -53,6 +53,8 @@ public class MainController {
         boolean isMe = username.equals(currentUser.getUsername());
         model.addAttribute("user", user1);
         model.addAttribute("isMe", isMe);
+        System.out.println(userService.getUserFriends(currentUser));
+        model.addAttribute("friendsList", userService.getUserFriends(currentUser));
         return "profile";
     }
 
@@ -76,9 +78,17 @@ public class MainController {
         User user = userRepository.findByUsername(username).orElseThrow();
         user.setNickname(userForm.getNickname());
         user.setName(userForm.getName());
-        user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        if(!userForm.getPassword().isBlank()){
+            user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+        }
         userRepository.save(user);
         return "redirect:settings";
+    }
+
+    @GetMapping("/game/{id}")
+    public String game(@PathVariable Long id){
+
+        return "game";
     }
 
     private User getCurrentUser(){

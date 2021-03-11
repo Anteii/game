@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title Game>
+    </title>
+    <link rel="stylesheet" th:href = "@{/styles/game.css}">
+    <link rel="icon" th:href="@{/icons/owl.png}">
+</head>
+<body>
+    <div>
+         <img class="creator-image" alt="Пикча не найдена">
+    </div>
+
+    <div class="players-list scrollable">
+        <div class="player"><!--th:each="friend : ${friendsList}" th:attr="username=${friend.getUsername()}" -->
+            <img class="mini-avatar"><!--th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />[[${friend.getNickname()}]] -->
+        </div>
+    </div>
+
+    <div class="next-question-button">
+        <button type="button">Следующий вопрос</button>
+    </div>
+
+    <div class="right-container">
+        <p>Chat</p>
+        <div class="chat scrollable" id="chat" name="chat">
+        </div>
+        <div class="chat-controls">
+            <input class="chat-input" type="text" name="chat-input" id="chat-input" />
+            <input class="chat-btn" type="button" name="chat-btn" id="chat-btn" value="Отправить"/>
+        </div>
+    </div>
+</body>
+</html>

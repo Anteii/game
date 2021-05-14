@@ -6,17 +6,22 @@ html{
     position: fixed; top: 70px; left: 40px;
     height: 300px;
     width: 300px;
+    border: 4px solid cadetblue;
+    border-color: #0d0d0d;
+    border-radius: 10px;
 }
 .user-settings{
-    position: fixed; top: 380px; left: 140px;
+    position: fixed; top: 365px; left: 75px;
 }
 
 .user-about{
-    position: fixed; top: 100px; left: 35%;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    position: fixed; top: 16px; left: 6%;
+    color: #fff;
 }
 
 .user-info{
-    position: fixed; top: 540px; left: 47%;
+    position: fixed; top: 70px; left: 45%;
 }
 
 .user-name{
@@ -38,6 +43,72 @@ html{
     width: 300px;
     background-color: #4f78c5;
     /*max-height: 100px;*/
-    border: 2px solid cadetblue;
+    /*border: 4px solid cadetblue;*/
     box-sizing: border-box;
+    border: 6px solid #000000;
+    border-radius: 20px;
+}
+
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    text-align: left;
+    border-collapse: separate;
+    border-spacing: 5px;
+    background: #000000;
+    color: #ffffff;
+    border: 16px solid #000000;
+    border-radius: 20px;
+}
+th {
+    font-size: 18px;
+    padding: 30px;
+}
+td {
+    font-size: 30px;
+    background: #6699ff;
+    padding: 30px;
+}
+
+.user-settings {
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #e74c3c;
+    border-radius: 0.6em;
+    color: #e74c3c;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 20px;
+    padding: 1.2em 2.8em;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+.user-settings:hover, .btn:focus {
+    color: #6699ff;
+    outline: 0;
+}
+
+.user-settings{
+    border-color: #3498db;
+    color: #fff;
+    box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+}
+.user-settings:hover {
+    box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }

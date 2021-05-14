@@ -20,7 +20,8 @@
 
     <div class="friends-list scrollable">
         <div class="friend" th:each="friend : ${friendsList}" th:attr="username=${friend.getUsername()}">
-             <img class="mini-avatar" th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />[[${friend.getNickname()}]]
+             <img class="mini-avatar" th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />
+            <br>[[${friend.getNickname()}]]
          </div>
     </div>
 

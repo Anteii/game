@@ -15,6 +15,7 @@ public class SecurityUser implements UserDetails {
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
     private final boolean isActive;
+    private final boolean isBanned;
 
 
     @Override
@@ -39,7 +40,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return isActive;
+        return !isBanned;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class SecurityUser implements UserDetails {
                 user.getIsEnabled(),
                 user.getIsEnabled(),
                 user.getIsEnabled(),
-                user.getIsEnabled(),
+                !user.getIsBanned(),
                 user.getRole().getAuthorities()
         );
     }

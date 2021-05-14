@@ -2,6 +2,7 @@ package com.onlinegame.game.config;
 
 import com.onlinegame.game.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
@@ -33,6 +34,9 @@ public class AuthenticationErrorHandler extends SimpleUrlAuthenticationFailureHa
             //writer.print("username="+request.getParameter("username") + "&");
             //writer.print("password="+request.getParameter("password"));
             //response.sendRedirect("/auth/double_login_warning");
+        }
+        else if (exception.getClass().isAssignableFrom(LockedException.class)) {
+            response.sendRedirect("/auth/you-are-banned");
         }
         else{
             //request.getRequestDispatcher("/auth/login-error").forward(request, response);

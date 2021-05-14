@@ -20,8 +20,8 @@
     <div class="main-container">
         <div class="left-container">
             <div class="game-finder">
-                <input type="text" name="game-name" id="game-name" placeholder="Название комнаты"/>
-                <input type="button" name="find-game" id="find-game-btn" value="найти"/>
+                <input type="text"   name="game-name"   id="game-name" placeholder="Название комнаты"/>
+                <input type="button" name="find-game"   id="find-game-btn" value="найти"/>
                 <input type="button" name="create-game" id="create-game-btn" value="создать"/>
             </div>
             <div id="games-list"></div>
@@ -31,13 +31,15 @@
             <div class="chat scrollable" id="chat" name="chat">
             </div>
             <div class="chat-controls">
-                <input class="chat-input" type="text" name="chat-input" id="chat-input" />
+                <input class="chat-input" type="text" name="chat-input" id="chat-input" placeholder="Введите сообщение"/>
                 <input class="chat-btn" type="button" name="chat-btn" id="chat-btn" value="Отправить"/>
             </div>
             <p>Friends</p>
             <div class="friends-list scrollable">
                 <div class="friend" th:each="friend : ${friendsList}" th:attr="username=${friend.getUsername()}">
-                    <img class="mini-avatar" th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />[[${friend.getNickname()}]]
+                    <img class="mini-avatar" th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />
+                    <br>
+                    [[${friend.getNickname()}]]
                 </div>
             </div>
         </div>

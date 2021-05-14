@@ -193,6 +193,11 @@ public class AuthController {
         }
     }
 
+    @RequestMapping("/you-are-banned")
+    private String youAreBanned(){
+        return "ban-page";
+    }
+
     private boolean isUserAuthenticated(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && !(authentication instanceof AnonymousAuthenticationToken);

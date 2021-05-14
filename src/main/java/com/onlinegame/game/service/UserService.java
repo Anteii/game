@@ -101,4 +101,12 @@ public class UserService {
             return false;
         }
     }
+    public void banUser(Long id){
+        User user = userRepository.findById(id).orElseThrow();
+        user.setIsBanned(true);
+    }
+    public void unbanUser(Long id){
+        User user = userRepository.findById(id).orElseThrow();
+        user.setIsBanned(false);
+    }
 }

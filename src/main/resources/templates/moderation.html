@@ -5,23 +5,32 @@
     <meta charset="UTF-8">
     <title>Moderation</title>
     <link rel="icon" th:href="@{/icons/owl.png}">
+    <link rel="stylesheet" th:href="@{/styles/moderation.css}">
+    <script src="/webjars/jquery/jquery.min.js"></script>
 </head>
 <body>
     <table>
-        <colgroup>
-            <col span="2" style="background:Khaki"><!-- С помощью этой конструкции задаем цвет фона для первых двух столбцов таблицы-->
-            <col style="background-color:LightCyan"><!-- Задаем цвет фона для следующего (одного) столбца таблицы-->
-        </colgroup>
         <tr>
-            <th>id жалобы</th>
-            <th>Нарушитель</th>
-            <th>Комментарий к жалобе</th>
+            <td>Id</td>
+            <td>Тема</td>
+            <td>Отправитель</td>
+            <td>Подозреваемый</td>
+            <td>Подробное описание</td>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Chel</td>
-            <td>Я ТЕ РЕПОРТ КИНУ</td>
-        </tr>
+        <th:block th:each="ticket : ${ticketList}">
+            <tr th:unless="${ticket.getStatus()}" th:id="'row-' + ${ticket.getTicketId()}">
+                <td th:text="${ticket.getTicketId()}">Id</td>
+                <td th:text="${ticket.getTheme()}">Theme</td>
+                <td th:text="${ticket.getSender().getUsername()}">Sender</td>
+                <td th:text="${ticket.getSuspect().getUsername()}">Sus</td>
+                <td th:text="${ticket.getDescription()}">Description</td>
+                <td>
+                    <input class="accept-btn" type="button" value="Принять" data-th-attr="data-ticketId=${ticket.getTicketId()}"/>
+                    <input class="reject-btn" type="button" value="Отказать" data-th-attr="data-ticketId=${ticket.getTicketId()}"/>
+                </td>
+            </tr>
+        </th:block>
     </table>
 </body>
+<script src="../static/js/games.js" th:src="@{/js/moderation.js}"></script>
 </html>

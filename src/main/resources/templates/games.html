@@ -13,8 +13,9 @@
 <body>
 <div class="page">
     <div class="header">
-        <form class="logout-btn" th:action="@{/auth/logout}" method="POST"><input type="submit" value="Logout"></form>
-        <form class="profile-btn" th:action="@{/profile/{name}(name=${user.getUsername()})}" method="GET"><input type="submit" value="Profile"></form>
+        <form class="moderation-btn" th:if="${user.getRole().name() == 'ADMIN'}" th:action="@{/moderation/tickets}" method="GET"><input type="submit" value="Модерация"/></form>
+        <form class="logout-btn" th:action="@{/auth/logout}" method="POST"><input type="submit" value="Выйти"></form>
+        <form class="profile-btn" th:action="@{/profile/{name}(name=${user.getUsername()})}" method="GET"><input type="submit" value="Профиль"/></form>
     </div>
     <div class="main-container">
         <div class="left-container">

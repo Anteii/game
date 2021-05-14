@@ -7,7 +7,6 @@ import com.onlinegame.game.repository.UserRepository;
 import com.onlinegame.game.service.GameService;
 import com.onlinegame.game.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,12 +41,6 @@ public class MainController {
         model.addAttribute("friendsList", friendsList);
         model.addAttribute("user", getCurrentUser());
         return "games";
-    }
-
-    @GetMapping("/moderation")
-    @PreAuthorize("hasAuthority('moderation')")
-    public String moderation(){
-        return "moderation";
     }
 
     @GetMapping("/profile/{username}")

@@ -1,6 +1,7 @@
 package com.onlinegame.game.service;
 
 import com.onlinegame.game.dto.UserForm;
+import com.onlinegame.game.exceptions.EmailClientException;
 import com.onlinegame.game.model.Friendship;
 import com.onlinegame.game.model.Role;
 import com.onlinegame.game.model.User;
@@ -23,21 +24,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final FriendshipRepository friendshipRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService, FriendshipRepository friendshipRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       FileService fileService, FriendshipRepository friendshipRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.friendshipRepository = friendshipRepository;
     }
 
     @Transactional
-    public void activateUser(String username){
-        User user = userRepository.findByUsername(username).orElseThrow();
-        user.setIsEnabled(true);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public User createNewUser(UserForm userForm, MultipartFile file){
+    public User createNewUser(UserForm userForm, MultipartFile file) throws EmailClientException {
         User user = new User();
         // Configure user
         user.setUsername(userForm.getUsername());

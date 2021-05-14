@@ -17,12 +17,30 @@ public class Game {
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long gameId;
     @Column
+    private String gameName;
+    @Column
     private java.sql.Timestamp date;
     @Column
     private Integer teamScore;
     @Column
     private Boolean wined;
 
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "hostId",
+            referencedColumnName = "userId"
+    )
+    private User host;
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "captainId",
+            referencedColumnName = "userId"
+    )
+    private User captain;
     @ManyToMany(
             cascade = CascadeType.ALL
     )

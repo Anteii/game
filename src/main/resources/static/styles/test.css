@@ -2,46 +2,54 @@
 
 /* BASIC */
 
-.scrollable{
+.scrollable {
     overflow-y: scroll;
 }
 
-.page{
+.page {
     height: 100vh;
     box-sizing: border-box;
 }
-.chat{
+.lobby{
+    box-sizing: border-box;
+    border: 2px solid seagreen;
+}
+.chat {
     background-color: #4f78c5;
     border: 2px solid cadetblue;
     height: 300px;
     /*max-height: 300px;*/
     box-sizing: border-box;
 }
-.chat-controls{
+
+.chat-controls {
     width: 100%;
     display: inline-flex;
     border: 2px solid yellow;
     padding: 0;
 }
-.chat-input{
+
+.chat-input {
     box-sizing: border-box;
     margin: 5% 0;
     height: 80%;
     padding: 0;
 }
-.chat-btn{
+
+.chat-btn {
     margin: 10% 0;
     height: 80%;
     padding: 0;
 }
-.friends-list{
+
+.friends-list {
     background-color: #4f78c5;
     max-height: 100px;
     border: 2px solid cadetblue;
     box-sizing: border-box;
 }
 
-.left-container{
+.left-container {
     width: 59%;
     margin: 0 1% 0 0;
     padding: 0;
@@ -51,7 +59,7 @@
     box-sizing: border-box;
 }
 
-.right-container{
+.right-container {
     width: 39%;
     margin: 0 0 0 1%;
     padding: 0;
@@ -59,53 +67,60 @@
     float: left;
     box-sizing: border-box;
 }
-.header{
+
+.header {
     min-height: 9%;
     box-sizing: border-box;
 }
-.main-container{
+
+.main-container {
     padding: 0;
     margin: 0;
     min-height: 79%;
     border: 2px solid red;
     box-sizing: border-box;
 }
-.footer{
+
+.footer {
     min-height: 9%;
     box-sizing: border-box;
     margin: 0;
 }
 
-#game-name{
+#game-name {
     width: 58%;
     float: left;
     margin: 0 12% 0 0;
     box-sizing: border-box;
 }
-#find-game{
+
+#find-game {
     width: 30%;
     margin: auto 0 0;
     box-sizing: border-box;
 }
-.top-right{
+
+.top-right {
     border: 2px solid black;
     float: right;
     box-sizing: border-box;
 }
-.profile-btn{
-    float:right;
+
+.profile-btn {
+    float: right;
 }
-.logout-btn{
-    float:right;
+
+.logout-btn {
+    float: right;
 }
-.header{
+
+.header {
     border: 2px solid pink;
     box-sizing: border-box;
 }
+
 html {
     background-color: #4f78c5
-    /*background-image: url("https://hdblackwallpaper.com/wallpaper/2015/07/plain-black-background-wallpaper-11-widescreen-wallpaper.jpg");
-    background-size: contain;*/
 }
 
 body {
@@ -115,7 +130,7 @@ body {
 
 a {
     color: #92badd;
-    display:inline-block;
+    display: inline-block;
     text-decoration: none;
     font-weight: 400;
 }
@@ -125,11 +140,10 @@ h2 {
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
-    display:inline-block;
+    display: inline-block;
     margin: 40px 8px 10px 8px;
     color: #cccccc;
 }
-
 
 
 /* STRUCTURE */
@@ -153,8 +167,8 @@ h2 {
     max-width: 450px;
     position: relative;
     padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
@@ -166,7 +180,6 @@ h2 {
     -webkit-border-radius: 0 0 10px 10px;
     border-radius: 0 0 10px 10px;
 }
-
 
 
 /* TABS */
@@ -181,10 +194,11 @@ h2.active {
 }
 
 
-
 /* FORM TYPOGRAPHY*/
 
-input[type=button], input[type=submit], input[type=reset]  {
+input[type=button],
+input[type=submit],
+input[type=reset] {
     background-color: #56baed;
     border: none;
     color: white;
@@ -194,8 +208,8 @@ input[type=button], input[type=submit], input[type=reset]  {
     display: inline-block;
     text-transform: uppercase;
     font-size: 13px;
-    -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
+    -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
+    box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
     margin: 5px 20px 40px 20px;
@@ -206,11 +220,15 @@ input[type=button], input[type=submit], input[type=reset]  {
     transition: all 0.3s ease-in-out;
 }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
+input[type=button]:hover,
+input[type=submit]:hover,
+input[type=reset]:hover {
     background-color: #39ace7;
 }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+input[type=button]:active,
+input[type=submit]:active,
+input[type=reset]:active {
     -moz-transform: scale(0.95);
     -webkit-transform: scale(0.95);
     -o-transform: scale(0.95);
@@ -218,7 +236,9 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active  
     transform: scale(0.95);
 }
 
-input[type=text], input[type=email], input[type=file] {
+input[type=text],
+input[type=email],
+input[type=file] {
     background-color: #f6f6f6;
     color: #0d0d0d;
     padding: 15px 32px;
@@ -239,49 +259,59 @@ input[type=text], input[type=email], input[type=file] {
     border-radius: 5px 5px 5px 5px;
 }
 
-input[type=text], input[type=email]:placeholder {
+input[type=text],
+input[type=email]:placeholder {
     color: #cccccc;
 }
 
-.file-input-group .btn-tertiary{
-    color:#555;
-    padding:0;
-    line-height:40px;
-    width:300px;
-    margin:auto;
-    display:block;
-    border:2px solid #555
+.file-input-group .btn-tertiary {
+    color: #555;
+    padding: 0;
+    line-height: 40px;
+    width: 300px;
+    margin: auto;
+    display: block;
+    border: 2px solid #555
 }
-.file-input-group .btn-tertiary:hover,.example-2 .btn-tertiary:focus{
-    color:#888;
-    border-color:#888
+
+.file-input-group .btn-tertiary:hover,
+.example-2 .btn-tertiary:focus {
+    color: #888;
+    border-color: #888
 }
-.file-input-group .input-file{
-    width:.1px;
-    height:.1px;
-    opacity:0;
-    overflow:hidden;
-    position:absolute;
-    z-index:-1
+
+.file-input-group .input-file {
+    width: .1px;
+    height: .1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1
 }
-.file-input-group .input-file + .js-labelFile{
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    padding:0 10px;
-    cursor:pointer
+
+.file-input-group .input-file+.js-labelFile {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    cursor: pointer
 }
-.file-input-group .input-file + .js-labelFile .icon:before{
-    content:"\f093"
+
+.file-input-group .input-file+.js-labelFile .icon:before {
+    content: "\f093"
 }
-.file-input-group .input-file + .js-labelFile.has-file .icon:before{
-    content:"\f00c";
-    color:#5AAC7B
+
+.file-input-group .input-file+.js-labelFile.has-file .icon:before {
+    content: "\f00c";
+    color: #5AAC7B
 }
+
 
 /* ANIMATIONS */
 
+
 /* Simple CSS3 Fade-in-down Animation */
+
 .fadeInDown {
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown;
@@ -317,24 +347,47 @@ input[type=text], input[type=email]:placeholder {
     }
 }
 
+
 /* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
 .fadeIn {
-    opacity:0;
-    -webkit-animation:fadeIn ease-in 1;
-    -moz-animation:fadeIn ease-in 1;
-    animation:fadeIn ease-in 1;
-
-    -webkit-animation-fill-mode:forwards;
-    -moz-animation-fill-mode:forwards;
-    animation-fill-mode:forwards;
-
-    -webkit-animation-duration:1s;
-    -moz-animation-duration:1s;
-    animation-duration:1s;
+    opacity: 0;
+    -webkit-animation: fadeIn ease-in 1;
+    -moz-animation: fadeIn ease-in 1;
+    animation: fadeIn ease-in 1;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+    animation-duration: 1s;
 }
 
 .fadeIn.first {
@@ -361,7 +414,9 @@ input[type=text], input[type=email]:placeholder {
     animation-delay: 1s;
 }
 
+
 /* Simple CSS3 Fade-in Animation */
+
 .underlineHover:after {
     display: block;
     left: 0;
@@ -377,10 +432,9 @@ input[type=text], input[type=email]:placeholder {
     color: #0d0d0d;
 }
 
-.underlineHover:hover:after{
+.underlineHover:hover:after {
     width: 100%;
 }
-
 
 
 /* OTHERS */
@@ -389,9 +443,10 @@ input[type=text], input[type=email]:placeholder {
     outline: none;
 }
 
-.error{
+.error {
     color: #ff3d58;
 }
+
 * {
     box-sizing: border-box;
 }

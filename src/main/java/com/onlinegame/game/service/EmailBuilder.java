@@ -45,7 +45,7 @@ public class EmailBuilder {
 
         context.setVariable("link", uriComponents.toString());
 
-        return templateEngine.process("mail-verification-template", context);
+        return templateEngine.process("mail/mail-verification-template", context);
     }
 
     String getUsernameFromToken(String token) throws InvalidTokenException {
@@ -75,6 +75,6 @@ public class EmailBuilder {
 
         context.setVariable("link", uriComponents.toString());
 
-        return templateEngine.process("mail-password-recovery-template.html", context);
+        return templateEngine.process("mail/mail-password-recovery-template.html", context);
     }
 }

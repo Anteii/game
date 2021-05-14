@@ -52,7 +52,4 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private Collection<Game> games;
 
-    public String getJavaDate(){
-        return creationDate.toString();
-    }
 }

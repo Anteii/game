@@ -1,8 +1,9 @@
 const socket = new SockJS('/gs-guide-websocket');
 let stompClient = Stomp.over(socket);
 let stompSubs = {
-    "newMessageSource" : null,
-    "historyLoad" : null,
+    newMessageSource : null,
+    historyLoad : null,
+    activeGames : null
 };
 stompClient.connect({}, (frame) => {
     console.log('Connected: ' + frame);
@@ -23,6 +24,17 @@ stompClient.connect({}, (frame) => {
                     .appendTo($("#chat"));
             });
             stompSubs.historyLoad.unsubscribe('/topic/history-load');
+        });
+    stompSubs.activeGames = stompClient.subscribe("/topic/active-games",
+        ans =>{
+            let ansObj = JSON.parse(ans.body);
+            let lobby = $("<div>").addClass("lobby")
+                .html(ansObj.gameName)
+                .attr("data-game-id", ansObj.gameId)
+                .on("dblclick", (e)=> {
+                    alert(1);
+                });
+            lobby.appendTo($("#games-list"));
         });
     stompClient.send(
         "/app/history-load-request",
@@ -118,7 +130,52 @@ $(document).bind("mousedown", function (e) {
         $(".custom-menu").empty().hide(100);
     }
 });
-
+$(document).ready((e) =>{
+    loadActiveGames();
+    console.log(11111);
+});
+function loadActiveGames(){
+    $.ajax({
+        url: '/games/load-active-games',
+        type: 'GET',
+        success: (data, status, _) => {
+            console.log("Loaded lobby list");
+            data.map(
+                lobbyData => {
+                    let lobby = $("<div>").addClass("lobby")
+                        .html(lobbyData.gameName)
+                        .attr("data-game-id", lobbyData.gameId)
+                        .on("dblclick", (e)=> {
+                            alert(1);
+                        });
+                    lobby.appendTo($("#games-list"));
+                }
+            );
+        },
+        error: (x, y, _) => {
+            console.log("Error: Loaded lobby list");
+        },
+        complete: (x, y) => {
+            //console.log("complete");
+        }
+    });
+}
+$("#create-game-btn").click(()=>{
+    let gameName = $("#game-name").val();
+    $.ajax({
+        type: "POST",
+        url: "/games/create-game",
+        dataType : "json",
+        data : {"gameName" : gameName},
+        success: function(data, textStatus) {
+            window.location.href = "/game/" + data.gameId;
+        },
+        complete: (x, y) => {
+            console.log(x);
+            console.log(y);
+        }
+    });
+});
 const doBindsFriendsContextMenu  = () =>{
     // If the menu element is clicked
     $(".custom-menu li").click(function(){

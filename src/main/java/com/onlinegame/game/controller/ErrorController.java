@@ -16,16 +16,16 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
             Integer statusCode = Integer.valueOf(status.toString());
             switch (statusCode){
                 case 404:
-                    return "error-404";
+                    return "error/error-404";
                 case 500:
-                    return "error-500";
+                    return "error/error-500";
                 case 403:
-                    return "error-403";
+                    return "error/error-403";
                 case 400:
-                    return "error-400";
+                    return "error/error-400";
             }
         }
-        return "error";
+        return "error/error";
     }
 
     @Override

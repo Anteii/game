@@ -6,18 +6,17 @@ import com.onlinegame.game.model.User;
 import com.onlinegame.game.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 public class AuthService {
 
     private final EmailService emailService;
-    private final UserService userService;
     private final UserRepository userRepository;
 
-    public AuthService(EmailService emailService, UserService userService, UserRepository userRepository) {
+    public AuthService(EmailService emailService, UserRepository userRepository) {
         this.emailService = emailService;
-        this.userService = userService;
         this.userRepository = userRepository;
     }
 
@@ -31,7 +30,7 @@ public class AuthService {
     public void verifyUser(String token) throws InvalidTokenException {
         String username = emailService.getUsernameFromToken(token);
         if (emailService.verifyToken(token))
-            userService.activateUser(username);
+            activateUser(username);
         else
             throw new InvalidTokenException("Invalid verifying token");
     }
@@ -42,5 +41,11 @@ public class AuthService {
             return userRepository.findByUsername(username);
         else
             throw new InvalidTokenException("Invalid recovery token");
+    }
+    @Transactional
+    public void activateUser(String username){
+        User user = userRepository.findByUsername(username).orElseThrow();
+        user.setIsEnabled(true);
+        userRepository.save(user);
     }
 }

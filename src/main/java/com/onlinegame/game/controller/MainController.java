@@ -1,8 +1,10 @@
 package com.onlinegame.game.controller;
 
 import com.onlinegame.game.dto.UserForm;
+import com.onlinegame.game.model.Game;
 import com.onlinegame.game.model.User;
 import com.onlinegame.game.repository.UserRepository;
+import com.onlinegame.game.service.GameService;
 import com.onlinegame.game.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,11 +27,13 @@ public class MainController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final GameService gameService;
 
-    public MainController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder) {
+    public MainController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, GameService gameService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.gameService = gameService;
     }
 
     @GetMapping("/games")
@@ -87,6 +91,14 @@ public class MainController {
 
     @GetMapping("/game/{id}")
     public String game(@PathVariable Long id){
+        User currentUser = getCurrentUser();
+        Game game = gameService.getGameById(id);
+
+        if (game.getUsers().size() == 5)
+            return "redirect:/games";
+        if (!game.getHost().getUserId().equals(currentUser.getUserId())){
+            gameService.connectToTheGame(game.getGameId(), currentUser);
+        }
 
         return "game";
     }

@@ -9,7 +9,6 @@ import com.onlinegame.game.repository.UserRepository;
 import com.onlinegame.game.service.AuthService;
 import com.onlinegame.game.service.SessionService;
 import com.onlinegame.game.service.UserService;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -45,19 +44,11 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // code junk
-    private void test(){
-        String f = new ClassPathResource("static/images/profiles_pictures/").getPath();
-        System.out.println(f);
-    }
-
     @GetMapping("/login")
     public String login(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
-            return "login";
-        }
-        return "redirect:/games";
+        if (isUserAuthenticated())
+            return "redirect:/games";
+        return "login";
     }
 
     @GetMapping("/verify")
@@ -72,17 +63,18 @@ public class AuthController {
 
     @GetMapping("/login-error")
     public String loginError(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
-            model.addAttribute("loginError", true);
-            return "login";
+        if (isUserAuthenticated()){
+            return "redirect:/games";
         }
-
-        return "redirect:/games";
+        model.addAttribute("loginError", true);
+        return "login";
     }
 
     @GetMapping("/signup")
     public String signUp(Model model){
+        if (isUserAuthenticated()){
+            return "redirect:/games";
+        }
         UserForm user = new UserForm();
         model.addAttribute("user", user);
         return "signup";
@@ -91,7 +83,9 @@ public class AuthController {
     @PostMapping("/signup")
     public String signUpPost(@ModelAttribute("user") @Valid UserForm userFrom, BindingResult bindingResult,
                              @RequestParam("image") MultipartFile multipartFile, Model model){
-
+        if (isUserAuthenticated()){
+            return "redirect:/games";
+        }
         if (!userService.isFileSuitable(multipartFile)){
                 model.addAttribute("imageSizeError", true);
                 return "signup";
@@ -103,29 +97,31 @@ public class AuthController {
             model.addAttribute("emailIsTaken", !userService.isEmailFree(userFrom.getEmail()));
             return "signup";
         }
+
         User user = userService.createNewUser(userFrom, multipartFile);
         try {
             authService.sendVerificationEmail(user);
         }catch (EmailClientException e){
+            user = userRepository.findByUsername(user.getUsername()).orElseThrow();
+            userRepository.delete(user);
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Server couldn't send an activation email", e
+                    "Server couldn't send an activation email, try to signUp later", e
             );
         }
         return "redirect:/games";
     }
+
     @RequestMapping("/double_login_warning")
     public String doubleLogin(HttpServletRequest request, HttpServletResponse response, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+        if (isUserAuthenticated())
             return "redirect:/games";
-        }
         try {
             sessionService.closeUserSessions(request.getParameter("username"));
         } catch (SessionException e){
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Server can't close opened session",
+                    "You already have a opened session, which server can't close",
                     e
             );
         }
@@ -135,20 +131,16 @@ public class AuthController {
 
     @GetMapping("/forget")
     public String forget(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+        if (isUserAuthenticated())
             return "redirect:/games";
-        }
         model.addAttribute("user", new UserForm());
         return "forget-password";
     }
 
     @PostMapping("/forget")
     public String forget(@ModelAttribute("user") UserForm userForm, Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)){
+        if (isUserAuthenticated())
             return "redirect:/games";
-        }
         Optional<User> user = userRepository.findByEmail(userForm.getEmail());
         if (user.isEmpty()){
             model.addAttribute("emailIsFree", true);
@@ -168,6 +160,8 @@ public class AuthController {
 
     @GetMapping("/recover")
     public String recoverAccount(@RequestParam("token") String token, Model model) {
+        if (isUserAuthenticated())
+            return "redirect:/games";
         try {
             User user = authService.getUserByToken(token).orElseThrow();
             UserForm userForm = new UserForm();
@@ -184,6 +178,8 @@ public class AuthController {
     public String recoverAccountPost(@ModelAttribute("user")  @Valid UserForm userForm,
                                      BindingResult bindingResult,
                                      @ModelAttribute("token") String token) {
+        if (isUserAuthenticated())
+            return "redirect:/games";
         if (bindingResult.hasFieldErrors("password")){
             return "recover-password";
         }
@@ -195,5 +191,10 @@ public class AuthController {
         } catch (InvalidTokenException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token", e);
         }
+    }
+
+    private boolean isUserAuthenticated(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && !(authentication instanceof AnonymousAuthenticationToken);
     }
 }

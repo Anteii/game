@@ -22,6 +22,8 @@ public class ChatController {
     private final GlobalMessageRepository globalMessageRepository;
     private Queue<OutputGlobalMessage> testList;
     private static final int GLOBAL_MESSAGE_CACHE_CAPACITY = 20;
+
+
     public ChatController(UserRepository userRepository, GlobalMessageRepository globalMessageRepository) {
         this.userRepository = userRepository;
         this.globalMessageRepository = globalMessageRepository;
@@ -31,7 +33,6 @@ public class ChatController {
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public OutputGlobalMessage greeting(Message message) throws Exception {
-        //Thread.sleep(1000); // simulated delay
         System.out.println(testList.size());
         User user = getCurrentUser();
         GlobalMessage globalMessage = new GlobalMessage();

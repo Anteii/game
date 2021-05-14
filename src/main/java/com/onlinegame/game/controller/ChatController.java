@@ -46,6 +46,7 @@ public class ChatController {
         cacheGlobalChatMessage(outputGlobalMessage);
         return outputGlobalMessage;
     }
+
     @MessageMapping("/history-load-request")
     @SendTo("/topic/history-load")
     public Queue<OutputGlobalMessage> loadHistory(Object obj) throws Exception {

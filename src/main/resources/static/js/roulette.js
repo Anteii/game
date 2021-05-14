@@ -109,7 +109,7 @@ let img = null;
 const FRAME_RATE = 60;
 
 function preload() {
-    img = loadImage('/images/game/volk.png');
+    img = loadImage('/images/game/volk.jpg');
 }
 
 function setup() {

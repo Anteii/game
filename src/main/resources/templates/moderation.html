@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  lang="en" xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Moderation</title>
     <link rel="icon" th:href="@{/icons/owl.png}">
 </head>
 <body>
-Moderation
+    <table>
+        <colgroup>
+            <col span="2" style="background:Khaki"><!-- С помощью этой конструкции задаем цвет фона для первых двух столбцов таблицы-->
+            <col style="background-color:LightCyan"><!-- Задаем цвет фона для следующего (одного) столбца таблицы-->
+        </colgroup>
+        <tr>
+            <th>id жалобы</th>
+            <th>Нарушитель</th>
+            <th>Комментарий к жалобе</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Chel</td>
+            <td>Я ТЕ РЕПОРТ КИНУ</td>
+        </tr>
+    </table>
 </body>
 </html>

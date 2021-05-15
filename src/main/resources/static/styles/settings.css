@@ -4,7 +4,7 @@ html{
 
 
 .parameters{
-    position: fixed; top: 20%; left: 34%;
+    position: fixed; top: 20%; left: 29%;
 
 }
 
@@ -40,6 +40,15 @@ html{
 .apply-button:hover, .btn:focus {
     color: #6699ff;
     outline: 0;
+}
+
+.inpt {
+    width: 300px;
+    font-size: 13px;
+    padding: 6px 0 4px 10px;
+    border: 1px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 8px;
 }
 
 .apply-button{

@@ -21,15 +21,14 @@
             </button>
         </div>
         <div class="scoreboard">0:0</div>
-        <input type="button" name="leave-button" id="leave-button" value="Выйти" />
+        <form class="leave-button" th:action="@{leave-game}" method="POST"><input type="submit" value="Выйти"></form>
     </div>
     <div class="main-container">
         <div class="main-left">
             <div class="players-list">
-
             </div>
         </div>
-        <div class="main-center">
+        <div class="main-right">
             <div class="game-field">
                 <div class="roulette" id="roulette">
                     <!--<svg viewbox="0, 0, 100, 100" xmlns="http://www.w3.org/2000/svg" id="roulette-svg"></svg>-->
@@ -37,18 +36,6 @@
             </div>
             <div class="action-panel">
                 <input type="button" name="answer-button" id="answer-button" value="Ответить" />
-                <div class="tips">
-                    <div class=tip>tip</div>
-                </div>
-            </div>
-        </div>
-        <div class="main-right">
-            <p>Chat</p>
-            <div class="chat scrollable" id="chat" name="chat">
-            </div>
-            <div class="chat-controls">
-                <input class="chat-input" type="text" name="chat-input" id="chat-input" />
-                <input class="chat-btn" type="button" name="chat-btn" id="chat-btn" value="Отправить" />
             </div>
         </div>
     </div>

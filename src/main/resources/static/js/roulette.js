@@ -114,7 +114,7 @@ function preload() {
 
 function setup() {
 
-    let rouletteDiameter = Math.max(windowWidth * propX, windowHeight * propY);
+    let rouletteDiameter = 470;
 
     let background = createCanvas(rouletteDiameter, rouletteDiameter);
     background.parent('roulette');
@@ -213,10 +213,6 @@ function movePointerToPoint(point) {
 function calcDistance(point) {
     return getAngleByPoint(new Point(pointer.realX, pointer.realY), point) +
         Math.floor(Math.random() * 5 + 5) * 2 * Math.PI;
-}
-
-function mouseClicked() {
-    movePointerToRandomPoint(pointer, roulette);
 }
 
 function getAngleByPoint(p1, p2) {

@@ -96,6 +96,11 @@ public class MainController {
         return "game";
     }
 
+    @PostMapping("/game/leave-game")
+    public String leaveGame(){
+        return "redirect:/games";
+    }
+
     private User getCurrentUser(){
         UserDetails principle = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.findByUsername(principle.getUsername()).orElseThrow();

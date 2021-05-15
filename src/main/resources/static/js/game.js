@@ -53,6 +53,10 @@ function loadPlayers(){
         }
     });
 }
+$(".next-question").on("click", ()=>{
+    movePointerToRandomPoint();
+});
+
 function loadHost(){
     let gameId = getGameID();
     $.ajax({

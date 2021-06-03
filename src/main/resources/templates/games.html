@@ -6,9 +6,11 @@
     <title>Games</title>
     <link rel="icon" th:href="@{/icons/owl.png}">
     <link rel="stylesheet" th:href="@{/styles/test.css}">
+    <link rel="stylesheet" th:href="@{/styles/hystmodal.min.css}">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script th:src="@{/js/hystmodal.min.js}"></script>
 </head>
 <body>
 <div class="page">
@@ -47,6 +49,29 @@
     <div class="footer"></div>
     <ul class='custom-menu' ></ul>
 </div>
+<div class="hystmodal" id="banWindow" aria-hidden="true">
+    <div class="hystmodal__wrap">
+        <div class="hystmodal__window" role="dialog" aria-modal="true">
+            <button data-hystclose class="hystmodal__close">Close</button>
+            <p>Пожалуйста, выберете тему жалобы</p>
+            <div class="ban-options">
+                <input type="radio" id="ban-option-1"
+                       name="ban-option" value="swearing">
+                <label for="ban-option-1">Ругается в чате</label><br>
+                <input type="radio" id="ban-option-2"
+                       name="ban-option" value="behaviour">
+                <label for="ban-option-2">Оскорбительное поведение или профиль</label><br>
+                <input type="radio" id="ban-option-3"
+                       name="ban-option" value="demoralize">
+                <label for="ban-option-3">Неспортивное поведение</label><br>
+            </div>
+            <p>Пожалуйста, опишите причину вашего недовольства подробнее</p>
+            <input type="text" id="ban-text"/>
+            <input type="button" value="Отправить" id="send-ticket-btn"/>
+        </div>
+    </div>
+</div>
+<input  type="text" id="your-username" th:value="${user.getUsername()}" hidden>
 </body>
 <script src="../static/js/games.js" th:src="@{/js/games.js}"></script>
 </html>

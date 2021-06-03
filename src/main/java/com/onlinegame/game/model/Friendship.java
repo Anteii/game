@@ -16,9 +16,7 @@ public class Friendship {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private long friendshipId;
   @Column
-  private String status;
-  @Column
-  private java.sql.Timestamp date;
+  private java.time.Instant date;
 
   @ManyToOne(
     cascade = CascadeType.ALL, fetch = FetchType.EAGER

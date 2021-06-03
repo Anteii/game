@@ -68,6 +68,7 @@ class Pointer {
 }
 class Roulette {
     constructor() {
+        this.isActive = true;
         // Vertices array
         this.coords = [];
         // Radius of roulette
@@ -109,7 +110,7 @@ let img = null;
 const FRAME_RATE = 60;
 
 function preload() {
-    img = loadImage('/images/game/volk.jpg');
+    img = loadImage('/images/game/volk.png');
 }
 
 function setup() {

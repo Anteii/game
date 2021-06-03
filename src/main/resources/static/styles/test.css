@@ -34,6 +34,10 @@
     padding: 0;
 }
 
+.chat-message{
+    border: 2px solid black;
+}
+
 .chat-input {
     box-sizing: border-box;
     margin: 2px 0 0 0;
@@ -80,7 +84,14 @@
     float: left;
     box-sizing: border-box;
 }
-
+.custom-menu{
+    box-sizing: border-box;
+}
+.custom-menu>li{
+    background-color: aqua;
+    border: 2px solid black;
+    border-radius: 7px;
+}
 .right-container {
     width: 39%;
     margin: 0 0 0 1%;

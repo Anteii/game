@@ -54,7 +54,11 @@ function loadPlayers(){
     });
 }
 $(".next-question").on("click", ()=>{
-    movePointerToRandomPoint();
+    if (roulette.isActive){
+        roulette.isActive = false;
+        movePointerToRandomPoint();
+        setTimeout(()=>{roulette.isActive=true}, 11000);
+    }
 });
 
 function loadHost(){

@@ -18,7 +18,9 @@ public class TicketService {
     public List<Ticket> getAllTickets(){
         return ticketRepository.findAll();
     }
-
+    public void createTicket(Ticket ticket){
+        ticketRepository.save(ticket);
+    }
     public void acceptTicket(Long ticketId){
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
         System.out.println(ticketId + " " + ticket.getSuspect().getUsername());

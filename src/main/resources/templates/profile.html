@@ -18,7 +18,7 @@
         <p>[[${user.getNickname()}]] с нами с [[${#dates.format(user.getCreationDate(), "dd-MM-yyyy")}]]</p>
     </div>
 
-    <div class="friends-list scrollable">
+    <div class="friends-list scrollable" th:if="${isMe}">
         <div class="friend" th:each="friend : ${friendsList}" th:attr="username=${friend.getUsername()}">
              <img class="mini-avatar" th:src="@{/images/profiles_pictures/{name}(name=${friend.getAvatarPic()})}" />
             <br>[[${friend.getNickname()}]]

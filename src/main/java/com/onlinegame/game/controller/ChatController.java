@@ -42,7 +42,7 @@ public class ChatController {
 
         globalMessageRepository.save(globalMessage);
         OutputGlobalMessage outputGlobalMessage =
-                new OutputGlobalMessage(user.getNickname(), message.getMessage(), Instant.now());
+                new OutputGlobalMessage(user.getNickname(), message.getMessage(), Instant.now(), user.getUsername());
         cacheGlobalChatMessage(outputGlobalMessage);
         return outputGlobalMessage;
     }

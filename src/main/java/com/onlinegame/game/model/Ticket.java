@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name= "Ticket")
@@ -19,7 +20,8 @@ public class Ticket {
     public String theme;
     public String description;
     public Boolean status;
-
+    public Instant creationDate;
+    public Instant closingDate;
     @ManyToOne
     @JoinColumn(
             name = "senderId",

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -79,10 +80,20 @@ public class UserService {
     public void deleteFriend(User user, String friendUsername){
         User friendToDelete = userRepository.findByUsername(friendUsername).orElseThrow();
         Friendship f1 = friendshipRepository.findByUserOneAndUserTwo(user, friendToDelete).orElseThrow();
-        Friendship f2 = friendshipRepository.findByUserOneAndUserTwo(friendToDelete, user).orElseThrow();
-        //friendshipRepository.delete(f1);
-        friendshipRepository.deleteInBatch(List.of(f1, f2));
+        //Friendship f2 = friendshipRepository.findByUserOneAndUserTwo(friendToDelete, user).orElseThrow();
+        friendshipRepository.deleteInBatch(List.of(f1));
+        //friendshipRepository.deleteInBatch(List.of(f1, f2));
         //friendshipRepository.delete(f2);
+    }
+    public void addFriend(User user, String friendUsername){
+        User friendToAdd = userRepository.findByUsername(friendUsername).orElseThrow();
+        if (friendshipRepository.findByUserOneAndUserTwo(user, friendToAdd).isPresent()) return;
+        Friendship f1 = new Friendship();
+        f1.setDate(Instant.now());
+        f1.setUserOne(user);
+        f1.setUserTwo(friendToAdd);
+
+        friendshipRepository.save(f1);
     }
     public boolean isFileSuitable(MultipartFile file){
         return file.getSize() < USER_PROFILE_PICTURE_MAX_SIZE;

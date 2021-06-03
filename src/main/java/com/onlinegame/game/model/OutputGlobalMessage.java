@@ -13,4 +13,5 @@ public class OutputGlobalMessage {
     private String from;
     private String text;
     private Instant time;
+    private String username;
 }

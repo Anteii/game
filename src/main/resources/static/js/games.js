@@ -114,11 +114,10 @@ $("#send-ticket-btn").bind("click", ()=>{
     });
     myModal.close();
 });
-$(".friend").bind("contextmenu", (event) => {
+$(".friend").bind("contextmenu", function(event) {
     // Avoid the real one
     event.preventDefault();
     let contextMenu = $(".custom-menu");
-
     $("<li>").addClass("context-action")
         .text("Профиль")
         .attr("data-action", "profile")

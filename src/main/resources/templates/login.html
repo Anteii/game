@@ -18,7 +18,7 @@
         <p th:if="${doubleSessionError}" class="error">Ваша прошлая сессия была вынуждено закрыта. Повторите ещё раз</p>
         <form th:method="POST" th:action="@{/auth/login}">
             <label for="username">Логин</label><br><input type="text" id="username" name="username"/><br>
-            <label for="password">Пароль</label><br><input type="text" id="password" name="password"/><br>
+            <label for="password">Пароль</label><br><input type="password" id="password" name="password"/><br>
             <p><input type="submit" value="Войти" />
         </form>
 

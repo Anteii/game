@@ -47,6 +47,12 @@ public class SocialController {
         userService.addFriend(user, username);
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
+    @PatchMapping("/update-user-status")
+    public ResponseEntity<String> updateUserStatus(String status){
+        User user = getCurrentUser();
+        userService.updateStatus(user, status.equals("GAME"));
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
     @PostMapping("/send-ticket")
     public ResponseEntity<String> sendTicket(TicketDto ticketDto){
         Ticket ticket = new Ticket();

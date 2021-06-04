@@ -22,6 +22,10 @@ public class GameService {
         activeGames = new ArrayList<>();
     }
 
+    public boolean isActive(String gameName){
+        return activeGames.stream().anyMatch(x -> x.getGameName().equals(gameName));
+    }
+
     public ActiveGame createGame(User user, String gameName){
         Game game = new Game();
         game.setUsers(new HashSet<>());
@@ -30,13 +34,15 @@ public class GameService {
         game.setGameName(gameName);
         game.setHost(user);
         activeGames.add(game);
-        return new ActiveGame(game.getGameId(), game.getGameName());
+        return new ActiveGame(game.getGameId(), game.getGameName(), game.getHost().getUsername());
     }
-
+    public void deleteActiveGame(ActiveGame activeGame){
+        activeGames.removeIf(x -> x.getHost().getUsername().equals(activeGame.getHostUsername()));
+    }
     public List<ActiveGame> getActiveGames(){
         return activeGames
                 .stream()
-                .map(game -> new ActiveGame(game.getGameId(), game.getGameName()))
+                .map(game -> new ActiveGame(game.getGameId(), game.getGameName(), game.getHost().getUsername()))
                 .sorted(Comparator.comparing(ActiveGame::getGameName))
                 .collect(Collectors.toList());
     }

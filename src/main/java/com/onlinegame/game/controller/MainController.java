@@ -86,14 +86,16 @@ public class MainController {
     public String game(@PathVariable Long id){
         User currentUser = getCurrentUser();
         Game game = gameService.getGameById(id);
-
-        if (game.getUsers().size() == 5)
-            return "redirect:/games";
-        if (!game.getHost().getUserId().equals(currentUser.getUserId())){
-            gameService.connectToTheGame(game.getGameId(), currentUser);
+        int N = 2; // максимальное допустимое количество игроков
+        if (gameService.isActive(game.getGameName())){
+            if (game.getUsers().size() == N && game.getUsers().stream().noneMatch(x->x.equals(currentUser)))
+                return "redirect:/games";
+            if (!game.getHost().equals(currentUser)){
+                gameService.connectToTheGame(game.getGameId(), currentUser);
+            }
+            return "game";
         }
-
-        return "game";
+        return "redirect:/games";
     }
 
     @PostMapping("/game/leave-game")

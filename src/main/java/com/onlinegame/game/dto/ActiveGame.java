@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ActiveGame {
     Long gameId;
     String gameName;
+    String hostUsername;
 }

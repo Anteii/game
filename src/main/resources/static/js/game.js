@@ -19,6 +19,7 @@ $(document).ready(() => {
     loadPlayers();
     loadChat();
     loadGame();
+    updateUserStatus("GAME");
 });
 
 function loadPlayers(){
@@ -60,6 +61,25 @@ $(".next-question").on("click", ()=>{
         setTimeout(()=>{roulette.isActive=true}, 11000);
     }
 });
+const updateUserStatus = (status) =>{
+    $.ajax({
+        url: '/social/update-user-status',
+        type: 'PATCH',
+        success: (x, y, _) => {
+            console.log("success");
+        },
+        error: (x, y, _) => {
+            //console.log("error");
+        },
+        complete: (x, y) => {
+            //console.log("complete");
+        },
+        dataType : "json",
+        data : {
+            "status" : status
+        }
+    });
+};
 
 function loadHost(){
     let gameId = getGameID();

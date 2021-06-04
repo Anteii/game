@@ -115,9 +115,16 @@ public class UserService {
     public void banUser(Long id){
         User user = userRepository.findById(id).orElseThrow();
         user.setIsBanned(true);
+        userRepository.save(user);
     }
     public void unbanUser(Long id){
         User user = userRepository.findById(id).orElseThrow();
         user.setIsBanned(false);
+        userRepository.save(user);
+    }
+    public void updateStatus(User user, boolean inGame){
+        //User user = userRepository.findByUsername(username).orElseThrow();
+        user.setInGame(inGame);
+        userRepository.save(user);
     }
 }

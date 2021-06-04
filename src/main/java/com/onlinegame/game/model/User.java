@@ -50,7 +50,8 @@ public class User {
     private java.time.Instant creationDate;
     @Column
     private Boolean isBanned = false;
-
+    @Column
+    private Boolean inGame = false;
     @ManyToMany(mappedBy = "users")
     private Collection<Game> games;
 

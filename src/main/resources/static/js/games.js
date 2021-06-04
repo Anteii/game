@@ -10,27 +10,18 @@ stompClient.connect({}, (frame) => {
     console.log('Connected: ' + frame);
     stompSubs.newMessageSource = stompClient.subscribe('/topic/greetings',
         ans => {
-        let ansObj = JSON.parse(ans.body);
-        createMessageElem(ansObj);
+        createMessageElem(JSON.parse(ans.body));
     });
     stompSubs.historyLoad = stompClient.subscribe('/topic/history-load',
         ans => {
-            let ansObj = JSON.parse(ans.body);
-            ansObj.map(ms => {
+            stompSubs.historyLoad.unsubscribe('/topic/history-load');
+            JSON.parse(ans.body).map(ms => {
                 createMessageElem(ms);
             });
-            stompSubs.historyLoad.unsubscribe('/topic/history-load');
         });
     stompSubs.activeGames = stompClient.subscribe("/topic/active-games",
         ans =>{
-            let ansObj = JSON.parse(ans.body);
-            let lobby = $("<div>").addClass("lobby")
-                .html(ansObj.gameName)
-                .attr("data-game-id", ansObj.gameId)
-                .on("dblclick", (e)=> {
-                    alert(1);
-                });
-            lobby.appendTo($("#games-list"));
+            createGameElem(JSON.parse(ans.body));
         });
     stompClient.send(
         "/app/history-load-request",
@@ -70,7 +61,7 @@ $('#chat-input').on('keypress', (e) => {
 });
 $("#chat-btn").click(()=>{
         let message = $("#chat-input").val();
-        if (message.length === 0 || !message.trim()){
+        if (isEmptyString(message)){
             message.val("");
             return;
         }
@@ -138,6 +129,49 @@ $(".friend").bind("contextmenu", function(event) {
         left: event.pageX + "px"
     });
 });
+$("#create-game-btn").click(()=>{
+    let gameName = $("#game-name").val();
+    if (isEmptyString(gameName)){
+        alert("Введите название лобби");
+        return;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/games/create-game",
+        dataType : "json",
+        data : {"gameName" : gameName},
+        success: function(data, textStatus) {
+            window.location.href = "/game/" + data.gameId;
+        },
+        error: (x, y, _) => {
+            //console.log(x);
+            //console.log(y);
+            //console.log(_);
+            if (x.status == 400){
+                alert("Лобби с таким именем уже создано");
+            }
+            else{
+                alert("Что-то пошло не так.. Обновите страницу");
+                $("#game-name").val("");
+            }
+        },
+        complete: (x, y) => {
+            //console.log(x);
+            //console.log(y);
+        }
+    });
+});
+$("#find-game-btn").click(()=>{
+    let gameName = $("#game-name").val();
+    let lobbyList = $(".lobby");
+    lobbyList.attr("hidden", true);
+    if (!isEmptyString(gameName)){
+        lobbyList = lobbyList.filter(function( index ) {
+            return $(this).text() === gameName;
+        });
+    }
+    lobbyList.attr("hidden", false);
+});
 // If the document is clicked somewhere
 $(document).bind("mousedown", (e) => {
 
@@ -150,9 +184,9 @@ $(document).bind("mousedown", (e) => {
 });
 $(document).ready((e) =>{
     loadActiveGames();
-    console.log(11111);
+    updateUserStatus("MENU");
 });
-function loadActiveGames(){
+const loadActiveGames = () => {
     $.ajax({
         url: '/games/load-active-games',
         type: 'GET',
@@ -160,13 +194,7 @@ function loadActiveGames(){
             console.log("Loaded lobby list");
             data.map(
                 lobbyData => {
-                    let lobby = $("<div>").addClass("lobby")
-                        .html(lobbyData.gameName)
-                        .attr("data-game-id", lobbyData.gameId)
-                        .on("dblclick", (e)=> {
-                            alert(1);
-                        });
-                    lobby.appendTo($("#games-list"));
+                    createGameElem(lobbyData);
                 }
             );
         },
@@ -178,22 +206,6 @@ function loadActiveGames(){
         }
     });
 }
-$("#create-game-btn").click(()=>{
-    let gameName = $("#game-name").val();
-    $.ajax({
-        type: "POST",
-        url: "/games/create-game",
-        dataType : "json",
-        data : {"gameName" : gameName},
-        success: function(data, textStatus) {
-            window.location.href = "/game/" + data.gameId;
-        },
-        complete: (x, y) => {
-            console.log(x);
-            console.log(y);
-        }
-    });
-});
 const doBindsFriendsContextMenu  = () =>{
     // If the menu element is clicked
     $(".custom-menu li").click(function(){
@@ -215,13 +227,13 @@ const addFriend = (username) =>{
         url: '/social/add-friend',
         type: 'PATCH',
         success: (x, y, _) => {
-            console.log("success");
+            console.log("successfully added to friend list");
         },
         error: (x, y, _) => {
-            console.log("error");
+            console.log("error when trying add to friend list");
         },
         complete: (x, y) => {
-            console.log("complete");
+            //console.log("complete");
         },
         dataType : "json",
         data : {"username" : username}
@@ -233,7 +245,7 @@ const deleteFriend = (username) => {
         url: '/social/delete-friend',
         type: 'DELETE',
         success: (x, y, _) => {
-            console.log("success");
+            console.log("successfully deleted from friends");
         },
         error: (x, y, _) => {
             //console.log("error");
@@ -252,7 +264,6 @@ const createMessageElem = (data) =>{
         .html(messageView)
         .attr("data-username", data.username)
         .appendTo($("#chat"));
-    console.log(d.attr("data-username"));
     bindChatContextMenu(d);
 };
 const bindChatContextMenu = (elem) =>{
@@ -261,7 +272,6 @@ const bindChatContextMenu = (elem) =>{
         if ($("#your-username").val() === elem.attr("data-username"))
             return;
         event.preventDefault();
-        //console.log(elem.attr("data-username"));
         let contextMenu = $(".custom-menu");
         $("<li>").addClass("context-action")
             .text("Профиль")
@@ -309,5 +319,37 @@ const doBindsChatContextMenu = () =>{
         $(".custom-menu").empty().hide(100);
     });
 };
-
-
+const isEmptyString = (s) =>{
+    return s.length === 0 || !s.trim()
+};
+const createGameElem = (data) => {
+    $("<div>").addClass("lobby")
+        .html(data.gameName)
+        .attr("data-game-id", data.gameId)
+        .attr("tabindex", 0)
+        .on("click", (e)=>{
+            $(this).focus();
+        })
+        .on("dblclick", (e)=> {
+            window.location.href = "/game/" + data.gameId
+        }).appendTo($("#games-list"));
+};
+const updateUserStatus = (status) =>{
+    $.ajax({
+        url: '/social/update-user-status',
+        type: 'PATCH',
+        success: (x, y, _) => {
+            console.log("success");
+        },
+        error: (x, y, _) => {
+            //console.log("error");
+        },
+        complete: (x, y) => {
+            //console.log("complete");
+        },
+        dataType : "json",
+        data : {
+            "status" : status
+        }
+    });
+};

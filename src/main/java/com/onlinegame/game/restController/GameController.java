@@ -51,13 +51,14 @@ public class GameController {
         this.template = template;
     }
 
-    // GOVNO KAKOETO
     @MessageMapping("/game/{id}")
     public void greeting(@DestinationVariable Long gameId, Event event) throws Exception {
         this.template.convertAndSend("/topic/game/" + gameId, event);
     }
     @PostMapping("/games/create-game")
     public ResponseEntity<ActiveGame> createLobby(String gameName){
+        if (gameService.isActive(gameName))
+            return new ResponseEntity<>(new ActiveGame(), HttpStatus.BAD_REQUEST);
         ActiveGame game = gameService.createGame(getCurrentUser(), gameName);
         this.template.convertAndSend("/topic/active-games", game);
         return new ResponseEntity<>(game, HttpStatus.OK);

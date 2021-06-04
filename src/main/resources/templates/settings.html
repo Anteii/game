@@ -31,7 +31,7 @@
                 <tr>
                     <td><label for="password">Новый пароль</label></td>
                     <td>
-                        <input class="inpt" type="text" id="password" name="password"/>
+                        <input class="inpt" type="password" id="password" name="password"/>
                         <p th:each="error : ${#fields.errors('password')}"
                            th:text="${error}">Validation error</p><br>
                     </td>

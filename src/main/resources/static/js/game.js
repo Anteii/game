@@ -118,7 +118,7 @@ function loadPlayers(){
     });
 }
 $("#main-button").on("click", ()=>{
-    if (isHost(getYourUsername())){
+    if (isHost(getYourUsername()) && $("#start-game").attr("data-pressed")){
         if (roulette.isActive){
             roulette.isActive = false;
             nextQuestion();
@@ -127,7 +127,7 @@ $("#main-button").on("click", ()=>{
 });
 $("#start-game").on("click", ()=>{
     if (isHost(getYourUsername())){
-        $("#start-game").css("display", "none");
+        $("#start-game").css("display", "none").attr("data-pressed", true);
         startGame();
     }
 });
@@ -284,12 +284,14 @@ const displayQuestion = (text, answer=null) => {
     if (answer != null){
         $("<div>").addClass("question-answer").html("Ответ:"+"<br>"+answer).appendTo($(".question-window-content"));
         $("<button>").addClass("right-answer")
+            .prop("disabled", true)
             .text("Ответ правильный")
             .click((e)=>{
                 sendAnswer(true);
             })
             .appendTo($(".question-window-content"));
         $("<button>").addClass("wrong-answer")
+            .prop("disabled", true)
             .text("Ответ неправильный")
             .click((e)=>{
                 sendAnswer(false);
@@ -331,6 +333,8 @@ const changeState = (state) => {
     }
     else if (state === "ANSWER"){
         $(".question-timer").html("ОТВЕЧАЕТ КОМАНДА ЗНАТОКОВ");
+        $(".wrong-answer").prop("disabled", false);
+        $(".right-answer").prop("disabled", false);
         $(".submit-answer").css("display", "none");
         clearInterval(timer);
     }
@@ -339,15 +343,13 @@ const changeState = (state) => {
     }
 };
 const displayEndGamePanel = () => {
-    console.log("ENGAME");
-    $("<div>").addClass("question-timer").html("60s").appendTo($(".question-window-content"));
-    $("<div>").addClass("final-message").html("Поздравляем, ваша игра подошла к концу!").appendTo($(".question-window-content"));
+    $("<div>").addClass("final-message").html("Поздравляем, ваша игра подошла к концу!").appendTo($(".final-window-content"));
     $("<button>").addClass("final-btn").text("Выйти")
         .click((e)=>{
             window.location.href = "/games";
         })
-        .appendTo($(".question-window-content"));
-    myModal.open("#questionWindow");
+        .appendTo($(".final-window-content"));
+    myModal.open("#finalWindow");
 };
 const answer = () => {
     $.ajax({

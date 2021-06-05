@@ -2,10 +2,12 @@ package com.onlinegame.game.service;
 
 import com.onlinegame.game.model.Game;
 import com.onlinegame.game.model.GameInProcess;
+import com.onlinegame.game.model.GameRound;
 import com.onlinegame.game.model.User;
 import com.onlinegame.game.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,6 +19,7 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserService userService;
     final int MAX_PLAYERS_NUMBER = 2;
+    final int MAX_ROUND_NUMBER = 3;
 
     public GameService(GameRepository gameRepository, UserService userService) {
         nextId = gameRepository.getNextId()-1;
@@ -112,8 +115,7 @@ public class GameService {
     public boolean gameIsEnd(GameInProcess gameInProcess) {
         int n1 = gameInProcess.getExpertsScore();
         int n2 = gameInProcess.getViewersScore();
-        int MAX = 3;
-        return (Math.max(n1, n2) >= MAX && n1 != n2);
+        return (Math.max(n1, n2) >= MAX_ROUND_NUMBER && n1 != n2);
     }
 
     public void endGame(GameInProcess gameInProcess) {
@@ -141,8 +143,16 @@ public class GameService {
                 player.setWinedGames(player.getWinedGames() + 1);
             }
         }
+
+        Game game = gameInProcess.getGame();
+        game.setQuestions(gameInProcess.getRounds().stream().map(GameRound::getQuestion).collect(Collectors.toList()));
+        game.setDate(Instant.now());
+        game.setWined(expertsScore > viewersScore);
+        game.setTeamScore(gameInProcess.getPts());
+
         userService.updateUser(List.of(captain, host));
         userService.updateUser(players);
+        gameRepository.save(game);
         userService.updateLadder();
     }
 }

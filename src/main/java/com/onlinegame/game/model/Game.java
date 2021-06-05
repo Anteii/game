@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class Game {
     @Column
     private String gameName;
     @Column
-    private java.sql.Timestamp date;
+    private Instant date;
     @Column
     private Integer teamScore;
     @Column

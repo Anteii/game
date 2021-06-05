@@ -71,6 +71,8 @@ class Roulette {
         this.isActive = true;
         // Vertices array
         this.coords = [];
+        // Answered question
+        this.answered = [];
         // Radius of roulette
         this.radius = 0;
         for (let i = 0; i < 14; i++) {
@@ -147,6 +149,11 @@ function draw() {
     }
 }
 
+function excludeSector(n){
+    roulette.answered.push(n);
+    draw();
+}
+
 function windowResized() {
     if (!isInited) return;
     let rouletteDiameter = Math.max(windowWidth * propX, windowHeight * propY);
@@ -178,10 +185,14 @@ function drawRoulette() {
 
 function drawMarks() {
     for (let i = 0; i < 14; i++) {
+        let ind = (i + 4) % 14;
+        if (roulette.answered.includes(ind)){
+            continue;
+        }
         x = (roulette.coords[i].x + roulette.coords[(i + 1) % 14].x + roulette.radius) / 3;
         y = (roulette.coords[i].y + roulette.coords[(i + 1) % 14].y + roulette.radius) / 3;
         textAlign(CENTER, CENTER);
-        text((i + 4) % 14, x, y);
+        text(ind, x, y);
     }
 }
 
@@ -196,7 +207,6 @@ function drawPointer() {
     imageMode(CENTER);
     image(img, 0, 0, 100, 100);
 }
-
 
 function movePointerToRandomPoint() {
     let n = Math.floor(Math.random() * 14);

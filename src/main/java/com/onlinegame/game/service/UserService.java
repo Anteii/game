@@ -7,6 +7,7 @@ import com.onlinegame.game.model.Role;
 import com.onlinegame.game.model.User;
 import com.onlinegame.game.repository.FriendshipRepository;
 import com.onlinegame.game.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -126,5 +128,19 @@ public class UserService {
         //User user = userRepository.findByUsername(username).orElseThrow();
         user.setInGame(inGame);
         userRepository.save(user);
+    }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+    public void updateUser(Collection<User> users) {
+        userRepository.saveAll(users);
+    }
+    public void updateLadder(){
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "score"));
+        for (int i = 0; i < users.size(); i++) {
+            users.get(i).setPosition(i+1);
+        }
+        updateUser(users);
     }
 }

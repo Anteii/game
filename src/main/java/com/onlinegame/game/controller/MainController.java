@@ -4,6 +4,7 @@ import com.onlinegame.game.dto.UserForm;
 import com.onlinegame.game.model.Game;
 import com.onlinegame.game.model.User;
 import com.onlinegame.game.repository.UserRepository;
+import com.onlinegame.game.restController.GameController;
 import com.onlinegame.game.service.GameService;
 import com.onlinegame.game.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,12 +28,14 @@ public class MainController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final GameService gameService;
+    private final GameController gameController;
 
-    public MainController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, GameService gameService) {
+    public MainController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, GameService gameService, GameController gameController) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.gameService = gameService;
+        this.gameController = gameController;
     }
 
     @GetMapping("/games")
@@ -83,19 +86,22 @@ public class MainController {
     }
 
     @GetMapping("/game/{id}")
-    public String game(@PathVariable Long id){
+    public String game(@PathVariable Long id, Model model){
         User currentUser = getCurrentUser();
-        Game game = gameService.getGameById(id);
-        int N = 2; // максимальное допустимое количество игроков
-        if (gameService.isActive(game.getGameName())){
-            if (game.getUsers().size() == N && game.getUsers().stream().noneMatch(x->x.equals(currentUser)))
-                return "redirect:/games";
-            if (!game.getHost().equals(currentUser)){
-                gameService.connectToTheGame(game.getGameId(), currentUser);
-            }
-            return "game";
+        Game game = null;
+        try{
+            game = gameService.getActiveGameById(id);
+        } catch (java.util.NoSuchElementException e){
+            return "redirect:/games";
         }
-        return "redirect:/games";
+        //  && (!gameService.isUserInThisGame(currentUser, game))
+        if ((gameService.isActiveGameFull(game))){
+            return "redirect:/games";
+        }
+        model.addAttribute("user", currentUser);
+        gameService.connectToTheGame(game, currentUser);
+        gameController.updateInGameUsersData(game.getGameId());
+        return "game";
     }
 
     @PostMapping("/game/leave-game")

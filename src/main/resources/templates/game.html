@@ -7,17 +7,18 @@
     </title>
     <link rel="stylesheet" th:href="@{/styles/game.css}">
     <link rel="icon" th:href="@{/icons/owl.png}">
+    <link rel="stylesheet" th:href="@{/styles/hystmodal.min.css}">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.0/p5.min.js" integrity="sha512-tGZFF1kxT/c9C+kv77mKkZ9Ww1VyU8TMX6HLUSzbPrDLuptbiRFBfti8A33ip+BBIHYUsybuZD9OKLmIqdLmaQ==" crossorigin="anonymous"></script>
-
+    <script th:src="@{/js/hystmodal.min.js}"></script>
 </head>
 
 <body>
     <div class="top">
         <div class="host-area">
-            <button type="submit" class="next-question">
+            <button type="submit" class="next-question" id="start-game">
                 <img src="https://iconarchive.com/download/i106741/praveen/minimal-outline/next.ico" />
             </button>
         </div>
@@ -36,7 +37,15 @@
                 </div>
             </div>
             <div class="action-panel">
-                <input type="button" name="answer-button" id="answer-button" value="Ответить" />
+                <input type="button" name="answer-button" id="main-button" value="Ответить" />
+            </div>
+        </div>
+    </div>
+    <input  type="hidden" id="your-username" th:value="${user.getUsername()}">
+    <div class="hystmodal" id="questionWindow" aria-hidden="true">
+        <div class="hystmodal__wrap">
+            <div class="hystmodal__window" role="dialog" aria-modal="true">
+                <div class="question-window-content"></div>
             </div>
         </div>
     </div>

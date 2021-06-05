@@ -71,7 +71,7 @@
         </div>
     </div>
 </div>
-<input  type="text" id="your-username" th:value="${user.getUsername()}" hidden>
+<input  type="hidden" id="your-username" th:value="${user.getUsername()}" style="display: none">
 </body>
 <script src="../static/js/games.js" th:src="@{/js/games.js}"></script>
 </html>
